@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import * as BookAPI from './BooksAPI.js'
 
-export default function Book({ data,setData,book }) {
+export default function Book({ book,setUpdate,update,search }) {
   const[loading,setLoading]=useState(true)
   const[option, setOption]=useState()
-  
-  
-  async function getBookData() {
+
+  function getBookData() {
     if(book.imageLinks!=='' && book.title!=='' &&book.authors!==''){
         setLoading(false)
       }
@@ -17,14 +16,16 @@ export default function Book({ data,setData,book }) {
   useEffect(()=>
   {
    getBookData()
-   
   }, [book]) 
 
-  async function getData(option) {
-      BookAPI.update(book, option!=='move'&&option)}
+  function getData(option) {
+      BookAPI.update(book, option!=='move'&&option)
+      if(search){book['shelf']=option}
+    }
   useEffect(()=>
-  { 
+  {
     getData(option)
+    setUpdate([book.id,book.option])
   }, [option]) 
   
   return (
@@ -32,10 +33,9 @@ export default function Book({ data,setData,book }) {
       {(loading ? <div>Loading</div>:(
         <div>
           <div className="book-top">
-            <div className="book-cover" alt={book.title} style={{ width: 128, height: 188, backgroundImage: `url("${book.imageLinks&&book.imageLinks.thumbnail}")` }}></div>
+            <div className="book-cover" alt={book.title} style={{ width: 128, height: 188, backgroundImage: `url("${book.imageLinks&&book.imageLinks.thumbnail&&book.imageLinks.thumbnail}")` }}></div>
             <div className="book-shelf-changer">
-              <select name={book.id} onChange={(e)=> setOption(e.target.value)} defaultValue={book.shelf}>
-            
+              <select name={book.id} onChange={(e)=> setOption(e.target.value) } value={book.shelf?book.shelf:('none')}>
                 <option value="move" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
@@ -51,6 +51,5 @@ export default function Book({ data,setData,book }) {
         </div>   
   ))}
     </div>
-    
   )
 }

@@ -9,23 +9,27 @@ import { useEffect, useState } from 'react'
 
 const BooksApp = () => {
   const [data, setData] = useState(null)
+  const [update, setUpdate] = useState('')
+  
     async function getAllData() {
-        await BookAPI.getAll()
+         await BookAPI.getAll()
         .then((result) => setData(result)) 
       }
       useEffect(()=>
-      { 
+      { console.log(update)
         getAllData()
-      }, [data])
+        setUpdate()
+      }, [update])
+
+      
     
     return (
       <div className="app">
       <Routes>
-        <Route path='/' element={<Shelfs data={data} setData={setData}/>}/>
-        <Route path='/search' element={<Search data={data} setData={setData}/>}/>
+        <Route path='/' element={<Shelfs data={data} setUpdate={setUpdate} update={update}/>}/>
+        <Route path='/search' element={<Search data={data} setUpdate={setUpdate} update={update} />}/>
       </Routes>        
       </div>
-          
     )
   }
 

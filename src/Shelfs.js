@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import BookShelf from './BookShelf'
 
 
-export default function Shelfs({ data,setData }) {  
+export default function Shelfs({ data,setUpdate,update }) {  
     const [loading, setLoading] = useState(true)  
     const titles = ['Currently Reading','Want to Read','Read']
     const [showSearchPage, setshowSearchPage] = useState(false)
@@ -31,7 +31,7 @@ export default function Shelfs({ data,setData }) {
             </div>
             <div className="list-books-content">
                 <div>
-                {titles.map((title,index)=> <BookShelf data={data} key={index} shelf={shelf.currentlyReading&&
+                {titles.map((title,index)=> <BookShelf setUpdate={setUpdate} update={update}  data={data} key={index} shelf={shelf.currentlyReading&&
     title==='Currently Reading'?shelf.currentlyReading:(
         (title==='Want to Read'?shelf.wantToRead:shelf.read))} title={title}/>)}
                 </div>
